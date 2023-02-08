@@ -1,0 +1,155 @@
+body {
+    background-color: #81DAF5;
+}
+
+#titles {
+    position: fixed;
+    top: 0;
+    height: 4rem;
+    width: 100%;
+    display: flex;
+    z-index: 200;
+    margin: 0;
+    padding: 0;
+}
+
+#titles table {
+    display: block;
+    width: 100%;
+    height: 4rem;
+    margin: 0;
+}
+
+#titles tr, #titles tbody {
+    display: block;
+    width: 100%;
+    height: 2rem;
+    padding: 0;
+}
+
+#titles td {
+    display: block;
+    width: 100%;
+    height: 1rem;
+    font-size: 1rem;
+    text-align: left;
+    padding-left: 1rem;
+}
+
+.chat-container {
+    margin-top: 4rem;
+    margin-bottom: 6rem;
+    background-color: #81DAF5;
+    height: calc(100% + 6rem);
+    padding: 1rem;
+}
+
+.chat-container-history {
+    margin-top: 4rem;
+    background-color: #81DAF5;
+    padding: 1rem;
+}
+
+.chat-line-area {
+    display: inline-block;
+    width: 100%;
+    min-height: 0.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+.my-chat-box {
+    background-color: whitesmoke;
+    border-radius: 0.5rem;
+    float: right;
+}
+
+.other-chat-box {
+    background-color: antiquewhite;
+    border-radius: 0.5rem;
+    float: left;
+}
+
+.chat-box-area-text {
+    max-width: 65%;
+    word-wrap: break-word;
+    padding: 0.3rem;
+}
+
+.chat-box-text {
+    color: black;
+    margin: 0;
+}
+
+.chat-box-area-image {
+    max-width: 65%;
+    padding: 0.3rem;
+}
+
+.chat-box-image {
+    width: 100%;
+    height: 100%;
+}
+
+.chat-box-system {
+    color: #0c6251;
+    margin: 0;
+}
+
+
+#chat-control {
+    position: fixed;
+    top: calc(100% - 6rem);
+    height: 6rem;
+    width: 100%;
+    display: flex;
+    z-index: 200;
+    margin: 0;
+    padding: 0;
+    background-color: #81DAF5;
+}
+
+.chat-control-upper {
+    position: fixed;
+    top: calc(100% - 6rem);
+    height: 3rem;
+    width: 100%;
+    display: flex;
+    z-index: 200;
+    margin: 0;
+    padding: 0;
+    background-color: #81DAF5;
+}
+
+.upper-button {
+    width: 50%;
+    height: 3rem;
+    text-align: center;
+}
+
+.chat-control-lower {
+    position: fixed;
+    top: calc(100% - 3rem);
+    height: 3rem;
+    width: 100%;
+    display: flex;
+    z-index: 200;
+    margin: 0;
+    padding: 0;
+    background-color: #81DAF5;
+}
+
+.text-input {
+    width: calc(100% - 8rem);
+    height: 3rem;
+}
+
+.lower-button {
+    wdith: 3rem;
+    height: 3rem;
+}
+
+.lower-button > img {
+    width: 2rem;
+    height: 2rem;
+}

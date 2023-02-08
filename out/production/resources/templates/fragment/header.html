@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div id="header" th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+
+        <div id="left_items">
+            <button id="categoryButton" class="btn btn-link btn-sm"><img class="category" src="/icons/category.png">
+            </button>
+            <a href="/"><img src="/imgs/smallLogo.png" class="smallLogo"/></a>
+            <div id="left_menu">
+                <div class="category-item">
+                    <a href="/today"><img class="category-item-image" src="/categoryIcons/hot.png"></a>
+                    <a class="text-warning" href="/today">인기상품</a>
+                </div>
+                <div class="category-item">
+                    <a href="/"><img class="category-item-image" src="/categoryIcons/all.png"></a>
+                    <a class="text-warning" href="/">모든 물품</a>
+                </div>
+                <div class="category-item"
+                     th:each="category : ${T(com.yang.guseokgi.domain.category.PostCategory).values()}">
+                    <a class="" th:href="@{/{category} (category=${category})}" th:value="${category}">
+                        <img class="category-item-image" th:src="${category.icon}"/>
+                    </a>
+                    <a class="text-warning" th:href="@{/{category} (category=${category})}"
+                       th:value="${category}" th:text="${category.name}">
+                    </a>
+                </div>
+                <div class="category-item">
+                    <a href="/inform"><img class="category-item-image" src="/categoryIcons/inform.png"></a>
+                    <a class="text-warning" href="/inform">공지사항</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="right_items">
+            <button id="notificationButton" class="btn btn-link btn-sm ss"
+                    th:if="${session.accountSession != null && #lists.size(notification) > 0}">
+                <img class="notification" src="/icons/notificationExists.png"/>
+            </button>
+            <button id="notificationButton" class="btn btn-link btn-sm ss"
+                    th:if="${session.accountSession != null && #lists.size(notification) <= 0}">
+                <img class="notification" src="/icons/notification.png">
+            </button>
+            <div id="notification_menu" th:if="session.accountSession != null">
+                <br/>
+                <div th:each="notification : ${notification}" th:id="'notification-' + ${notification.id}">
+                    <div class="notification-upper">
+                        <a th:text="${notification.text}"
+                           th:href="@{/notification/redirect/{notificationId} (notificationId=${notification.id})}"></a>
+                    </div>
+                    <div class="notification-lower">
+                        <span th:text="${#temporals.format(notification.localDateTime, 'yyyy/MM/dd HH:mm')}" class="float-left"></span>
+                        <button th:attr="onclick=|deleteNotification('${notification.id}')|" class="btn btn-link float-right text-warning">삭제</button>
+                    </div>
+                    <hr/>
+                </div>
+            </div>
+            <button id="LoginButton" class="btn btn-link btn-sm" th:if="${session.accountSession == null}"
+                    th:onclick="|location.href='@{/login}'|">
+                <img th:if="${session.accountSession} == null" src="/icons/signIn.png" class="user"/>
+            </button>
+            <button id="myPageButton" class="btn btn-link btn-sm" th:if="${session.accountSession != null}">
+                <img th:if="${session.accountSession} != null" src="/icons/user.png" class="user"/>
+
+            </button>
+            <div id="right_menu" class="right-menu" th:if="${session.accountSession != null}">
+                <br/>
+                <h5 class="right-menu-category text-success" th:text="${session.accountSession.nickname} + '님'"></h5>
+                <a class="right-menu-elements text-warning" href="/logout">로그아웃</a>
+                <a class="right-menu-elements text-warning" href="/favorite/myFavorite">즐겨찾기</a>
+                <hr/>
+                <span class="right-menu-category text-muted">활동 내역</span>
+                <a class="right-menu-elements text-warning" href="/post/myPost">나의 물품</a>
+                <a class="right-menu-elements text-warning" href="/trade/trading">진행중 거래</a>
+                <a class="right-menu-elements text-warning" href="/trade/history">지난 거래</a>
+                <hr/>
+                <span class="right-menu-category text-muted">개인정보 수정</span>
+                <a class="right-menu-elements text-warning" href="/account/edit/nickname">닉네임 변경</a>
+                <a class="right-menu-elements text-warning" href="/account/edit/password">비밀번호 변경</a>
+                <hr/>
+                <span class="right-menu-category text-muted">고객 지원</span>
+                <a class="right-menu-elements text-warning" href="/inquiry/myInquiry">문의 내역</a>
+            </div>
+        </div>
+
+    </nav>
+</div>
+</html>

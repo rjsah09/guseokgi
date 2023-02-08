@@ -1,0 +1,110 @@
+#header {
+    position: fixed;
+    top: 0;
+    height: 4.5rem;
+    width: 100%;
+    display: flex;
+    z-index: 200;
+    margin: 0;
+}
+
+#header nav {
+    width: 100%;
+}
+
+#header .category {
+    width: 1.5rem;
+    hegith: 1.5rem;
+}
+
+#header .notification {
+    width : 1.5rem;
+    height: 1.5rem;
+}
+
+#header .smallLogo {
+    width: 7rem;
+}
+
+#header #right_menu {
+    position: fixed;
+    width: 12rem;
+    height: calc(100%);
+    top: 4.5rem;
+    left: calc(100% - 12rem);
+    background-color: #F7F7F7;
+    z-index: 100;
+}
+
+#header #left_menu {
+    position: fixed;
+    width: 19rem;
+    height: calc(100% - 4.5rem);
+    top: 4.5rem;
+    left: 0;
+    background-color: #F7F7F7;
+    z-index: 100;
+    padding: 1rem;
+    overflow: auto;
+}
+
+#header #notification_menu {
+    position: fixed;
+    width: 100%;
+    height: calc(100%);
+    top: 4.5rem;
+    left: 0;
+    background-color: #F7F7F7;
+    z-index: 100;
+    overflow: auto;
+}
+
+.category-item {
+    display: inline-block;
+    width: 4rem;
+    height: 5rem;
+    padding: 0;
+    margin: 0.5rem;
+    margin-bottom: 1.2rem;
+    text-align: center;
+}
+
+.category-item-image {
+    width: 4rem;
+    height: 4rem;
+}
+
+.right-menu-category {
+    display: block;
+    width: 100%;
+    font-size: 1rem;
+    text-align: left;
+    margin-left: 1.2rem;
+    margin-bottom: 0.6rem;
+}
+
+.right-menu-elements {
+    display: block;
+    width: 100%;
+    font-size: 1rem;
+    text-align: left;
+    margin-left: 2rem;
+    margin-bottom: 0.6rem;
+}
+
+.notification-upper {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.notification-lower {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    height: 1.4rem;
+}
+
+.notification-lower > button {
+    font-size: 1rem;
+}

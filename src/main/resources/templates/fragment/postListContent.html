@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="col" th:each="post:${list}" th:id="'post-' + ${post.id}" th:if="${list.numberOfElements > 0}">
+        <div class="row justify-content-start preview">
+            <div class="thumbnail" th:if="${post.thumbnail} != null">
+                <img th:src="${post.thumbnail}" th:onclick="|location.href='@{/post/view/{postId} (postId=${post.id})}'|"/>
+            </div>
+            <div class="thumbnail" th:if="${post.thumbnail} == null">
+                <img src="/imgs/thumbnailAlt.png" />
+            </div>
+            <div class="preview-right">
+                <span th:text="${post.postStatus.name}" class="preview-status"></span>
+                <div class="title">
+                    <a class="post-title preview-a" th:href="@{/post/view/{postId} (postId=${post.id})}"
+                          th:text="${post.title}"></a>
+                </div>
+                <a th:text="${post.nickname}" th:href="@{/post/writer/{accountId} (accountId=${post.accountId})}"></a><br />
+                <span th:text="${#temporals.format(post.postTime, 'yyyy/MM/dd HH:mm')} + ' | 조회 ' + ${post.views}"></span>
+            </div>
+        </div>
+        <hr/>
+    </div>
+    <div class="no-result" th:if="${list.numberOfElements == 0}">
+        <h4 class="text-muted all-center">해당 물품이 없습니다.</h4>
+    </div>
+</div>
+</html>

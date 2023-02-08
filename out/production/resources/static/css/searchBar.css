@@ -1,0 +1,38 @@
+#searchBar {
+    display: block;
+    width: 100%;
+    height: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+#searchBar form {
+    margin-left: auto;
+    width: 100%;
+    height: 2rem;
+}
+
+#searchBar input {
+    display: block;
+    float: right;
+    height: 2.5rem;
+}
+
+#searchBar button {
+    display: block;
+    float: right;
+    height: 2.5rem;
+}
+
+#searchBar .search-btn {
+    width : 1.4rem;
+    height : 1.4rem;
+    margin-top: 0;
+}
+
+#searchBar .search-bar {
+    margin-top: 0;
+}
+
+#searchBar .search-text {
+    width : 15rem;
+}

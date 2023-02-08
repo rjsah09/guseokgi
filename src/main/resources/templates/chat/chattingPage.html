@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>구석기장터</title>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="/css/commonSetting.css">
+    <link rel="stylesheet" href="/css/chatting.css">
+    <link rel="stylesheet" href="/css/header.css">
+
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+</head>
+<body>
+<div id="titles">
+    <table>
+        <tr class="table-dark">
+            <td><b th:text="'[' + ${room.myAccountNickname} + '] ' + ${room.myPostTitle}"></b></td>
+        </tr>
+        <tr class="table-light">
+            <td><b th:text="'[' + ${room.otherAccountNickname} + '] ' + ${room.otherPostTitle}"></b></td>
+        </tr>
+    </table>
+</div>
+<div class="chat-container">
+    <div class='chat-line-area' th:each="history : ${history}">
+
+        <div class='alert chat-box-area-text my-chat-box'
+             th:if="${#strings.equals(session.accountSession.id, history.writer)
+             && history.chatCategory == 'TEXT'}">
+            <p th:text="${history.message}" class="chat-box-text"></p>
+        </div>
+        <div class='alert chat-box-area-image my-chat-box'
+             th:if="${#strings.equals(session.accountSession.id, history.writer)
+             && history.chatCategory == 'IMAGE'}">
+            <img th:src="${history.message}" class="chat-box-image" />
+        </div>
+        <div class='alert chat-box-area-text my-chat-box'
+             th:if="${#strings.equals(session.accountSession.id, history.writer)
+             && (history.chatCategory != 'TEXT'
+             && history.chatCategory != 'IMAGE')}">
+            <p th:text="${history.message}" class="chat-box-system"></p>
+        </div>
+
+        <div class='alert chat-box-area-text other-chat-box'
+             th:if="${!#strings.equals(session.accountSession.id, history.writer)
+             && history.chatCategory == 'TEXT'}">
+            <p th:text="${history.message}" class="chat-box-text"></p>
+        </div>
+        <div class='alert chat-box-area-image other-chat-box'
+             th:if="${!#strings.equals(session.accountSession.id, history.writer)
+             && history.chatCategory == 'IMAGE'}">
+            <img th:src="${history.message}" class="chat-box-image"/>
+        </div>
+        <div class='alert chat-box-area-image other-chat-box'
+             th:if="${!#strings.equals(session.accountSession.id, history.writer)
+             && (history.chatCategory != 'TEXT'
+             && history.chatCategory != 'IMAGE')}">
+            <p th:text="${history.message}" class="chat-box-system"></p>
+        </div>
+    </div>
+</div>
+<div id="chat-control">
+    <div class="chat-control-upper" th:if="${room.myAccountId == session.accountSession.id}">
+        <button id="button-itemRCV" th:disabled="${room.myPostComplete == true} ? 'disabled'" class="upper-button btn btn-primary">물품 수령</button>
+        <button id="button-itemReject" th:disabled="${room.myPostCancel == true}" class="upper-button btn btn-secondary">거래 취소</button>
+        <button id="button-itemRejectWithdraw" th:disabled="${room.myPostCancel == false}" class="upper-button btn btn-secondary">취소 철회</button>
+    </div>
+    <div class="chat-control-upper" th:if="${room.otherAccountId == session.accountSession.id}">
+        <button id="button-itemRCV" th:disabled="${room.otherPostComplete == true} ? 'disabled'" class="upper-button btn btn-primary">물품 수령</button>
+        <button id="button-itemReject" th:disabled="${room.otherPostCancel == true}" class="upper-button btn btn-secondary">거래 취소</button>
+        <button id="button-itemRejectWithdraw" th:disabled="${room.otherPostCancel == false}" class="upper-button btn btn-secondary">취소 철회</button>
+    </div>
+
+    <div class="input-group mb-3 chat-control-lower">
+        <input type="text" id="msg" class="form-control text-input">
+        <button id="button-send" class="btn btn-success text-send lower-button" type="button">▶</button>
+        <button th:onclick="uploadButton()" class="lower-button btn btn-info">
+            <img src="/icons/imgSend.png"/>
+        </button>
+        <form id="upload-file-form" hidden>
+            <input id="upload-file-input" type="file" name="uploadfile" accept="image/jpeg,image/png" onchange="uploadFile()"/>
+            <button type="button" id="" onclick='uploadFile();'>업로드</button>
+        </form>
+    </div>
+</div>
+</body>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $(document).scrollTop($(document).height());
+
+        var roomId = [[${room.id}]];        //방 이름(Topic)
+        var username = [[${session.accountSession.id}]];    //사용자 이름 ID
+
+        var sockJs = new SockJS("/stomp/chat");     //sockJS
+        var stomp = Stomp.over(sockJs);         //Stomp 객체
+
+
+        if(username == [[${room.myAccountId}]]) {
+            var myPostCancel = [[${room.myPostCancel}]];
+            if(myPostCancel) {
+                $("#button-itemReject").hide();
+                $("#button-itemRejectWithdraw").show();
+            } else {
+                $("#button-itemReject").show();
+                $("#button-itemRejectWithdraw").hide();
+            }
+        } else {
+            var otherPostCancel = [[${room.otherPostCancel}]];
+            if(otherPostCancel) {
+                $("#button-itemReject").hide();
+                $("#button-itemRejectWithdraw").show();
+            } else {
+                $("#button-itemReject").show();
+                $("#button-itemRejectWithdraw").hide();
+            }
+
+        }
+
+        stomp.connect({}, function () {
+
+            stomp.subscribe("/sub/chat/room/" + roomId, function (chat) {   //chat 객체 custom 가능
+                var content = JSON.parse(chat.body);
+
+                var writer = content.writer;
+                var message = content.message;
+                var chatCategory = content.chatCategory;
+                var str = '';
+
+                str = "<div class='chat-line-area'>";
+                if(writer == username) {
+                    str += "<div class='alert chat-box-area-text my-chat-box'>";
+                    if(chatCategory == 'TEXT') {
+                        str += "<p class='chat-box-text'>" + message + "</p>"
+                    } else if(chatCategory == 'IMAGE') {
+                        str += "<img src='" + message + "' class='chat-box-image'/>";
+                    } else {
+                        str += "<p class='chat-box-system'>" + message + "</p>"
+                    }
+                    str += "</div>";
+                } else {
+                    str += "<div class='alert chat-box-area-text other-chat-box'>";
+                    if(chatCategory == 'TEXT') {
+                        str += "<p class='chat-box-text'>" + message + "</p>"
+                    } else if(chatCategory == 'IMAGE') {
+                        str += "<img src='" + message + "' class='chat-box-image'/>";
+                    } else {
+                        str += "<p class='chat-box-system'>" + message + "</p>"
+                    }
+                    str += "</div>";
+                }
+                str+= "</div>";
+
+                var presentScroll = $(document).scrollTop();
+                var endScroll = $(document).height() - $(window).height();
+
+                $(".chat-container").append(str);
+
+                if (writer == username) {
+                    $(document).scrollTop($(document).height());
+                } else {
+                    if (presentScroll + 20 >= endScroll) {
+                        $(document).scrollTop($(document).height());
+                    }
+                }
+
+                if (writer != username) {
+                    var json = {
+                        "tradeId": [[${room.id}]],
+                        "accountId": [[${session.accountSession.id}]]
+                    }
+                    $.ajax({
+                        url: "/notification/chatChecked",
+                        type: "post",
+                        data: JSON.stringify(json),
+                        contentType: "application/json"
+                    })
+                }
+
+                if (chatCategory == 'SUCCEED') {
+                    alert("거래가 성사되었습니다.");
+                    location.replace("/trade/trading");
+                } else if (chatCategory == 'CANCEL') {
+                    alert("거래가 취소되었습니다.");
+                    location.replace("/trade/trading/");
+                }
+            });
+        });
+
+        $("#button-send").on("click", function (e) {
+            var msg = document.getElementById("msg");
+
+            stomp.send('/pub/chat/message', {}, JSON.stringify({
+                roomId: roomId,
+                message: msg.value,
+                writer: username,
+                chatCategory: 'TEXT'
+            }));
+            msg.value = '';
+
+            var targetAccountId;
+            if ([[${session.accountSession.id}]] == [[${room.myAccountId}]]) {
+                targetAccountId = [[${room.myAccountId}]];
+            } else {
+                targetAccountId = [[${room.otherAccountId}]];
+            }
+
+        });
+
+        $("#button-itemRCV").on("click", function (e) {
+            if (confirm("물품을 수령 처리하시겠습니까?")) {
+                var json = {
+                    "tradeId": [[${room.id}]],
+                    "accountId": [[${session.accountSession.id}]],
+                    "request": "itemRCV"
+                }
+
+                $.ajax({
+                    url: "/trade/itemRCV",
+                    type: "post",
+                    data: JSON.stringify(json),
+                    contentType: "application/json",
+                    success: function (data) {
+                        $("#button-itemRCV").attr("disabled", true);
+                        stomp.send('/pub/chat/message', {}, JSON.stringify({
+                            roomId: roomId,
+                            message: '물품을 수령했습니다',
+                            writer: username,
+                            chatCategory: 'SYSTEM'
+                        }));
+                        if (data.complete == "true") {
+                            stomp.send('/pub/chat/message', {}, JSON.stringify({
+                                roomId: roomId,
+                                message: '거래가 완료되었습니다',
+                                writer: username,
+                                chatCategory: 'SUCCEED'
+                            }));
+                        }
+                    },
+                    error: function () {
+                        alert("요청을 실행하지 못했습니다");
+                    }
+                })
+            }
+        });
+
+        $("#button-itemReject").on("click", function (e) {
+            if (confirm("거래 취소 요청을 보내시겠습니까?")) {
+                var json = {
+                    "tradeId": [[${room.id}]],
+                    "accountId": [[${session.accountSession.id}]],
+                    "request": "itemRCV"
+                }
+
+                $.ajax({
+                    url: "/trade/itemReject",
+                    type: "post",
+                    data: JSON.stringify(json),
+                    contentType: "application/json",
+                    success: function (data) {
+                        $("#button-itemReject").attr("disabled", true);
+                        $("#button-itemRejectWithdraw").attr("disabled", false);
+                        stomp.send('/pub/chat/message', {}, JSON.stringify({
+                            roomId: roomId,
+                            message: '거래 취소를 요청했습니다',
+                            writer: username,
+                            chatCategory: 'SYSTEM'
+                        }));
+                        if (data.complete == "true") {
+                            stomp.send('/pub/chat/message', {}, JSON.stringify({
+                                roomId: roomId,
+                                message: '거래가 취소되었습니다',
+                                writer: username,
+                                chatCategory: 'CANCEL'
+                            }));
+                        }
+                    },
+                    error: function () {
+                        alert("요청을 실행하지 못했습니다");
+                    }
+                });
+            }
+        });
+
+        $("#button-itemRejectWithdraw").on("click", function (e) {
+            if (confirm("거래 취소 요청을 철회하시겠습니까?")) {
+                var json = {
+                    "tradeId": [[${room.id}]],
+                    "accountId": [[${session.accountSession.id}]],
+                    "request": "itemRCV"
+                }
+
+                $.ajax({
+                    url: "/trade/itemRejectWithdraw",
+                    type: "post",
+                    data: JSON.stringify(json),
+                    contentType: "application/json",
+                    success: function (data) {
+                        $("#button-itemRejectWithdraw").attr("disabled", true);
+                        $("#button-itemReject").attr("disabled", false);
+                        stomp.send('/pub/chat/message', {}, JSON.stringify({
+                            roomId: roomId,
+                            message: '거래 취소가 철회되었습니다',
+                            writer: username,
+                            chatCategory: 'SYSTEM'
+                        }));
+                        //알림 작성 기능
+                    },
+                    error: function () {
+                        alert("요청을 실행하지 못했습니다");
+                    }
+                })
+            }
+        });
+
+        uploadFile = function () {
+            $.ajax({
+                url: "/chat/imageUpload",
+                type: "post",
+                data: new FormData($("#upload-file-form")[0]),
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function (data) {
+                    var imageUrl = data.imageUrl;
+                    stomp.send('/pub/chat/message', {}, JSON.stringify({
+                        roomId: roomId,
+                        message: imageUrl,
+                        writer: username,
+                        chatCategory: 'IMAGE'
+                    }));
+                },
+                error: function () {
+                    alert("실패");
+                }
+            });
+        }
+
+        uploadButton = function() {
+            let input = document.getElementById("upload-file-input");
+            input.click();
+        }
+
+    });
+</script>
+
+</html>

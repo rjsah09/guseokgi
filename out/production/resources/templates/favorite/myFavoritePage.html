@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>구석기장터</title>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="/js/headerToggle.js"></script>
+    <link rel="stylesheet" href="/css/commonSetting.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/favorite.css">
+    <link rel="stylesheet" href="/css/noResult.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+</head>
+<body>
+<div th:replace="fragment/header :: header"></div>
+<div class="container-fluid">
+    <h5 class="purpose text-info">즐겨찾기</h5>
+    <hr/>
+    <div id="justify-content" th:if="${list.size() > 0}">
+        <div class="col" th:each="fav:${list}" th:id="'favorite-' + ${fav.id}">
+            <div class="row justify-content-start preview">
+                <div class="thumbnail" th:if="${fav.thumbnail} != null">
+                    <img th:src="${fav.thumbnail}" th:onclick="|location.href='@{/post/view/{postId} (postId=${fav.postId})}'|"/>
+                </div>
+                <div class="thumbnail" th:if="${fav.thumbnail} == null">
+                    <img src="/imgs/thumbnailAlt.png" />
+                </div>
+                <div class="preview-right">
+                    <span th:text="${fav.postStatus.name}" class="preview-status"></span>
+                    <a class="post-title preview-a" th:href="@{/post/view/{postId} (postId=${fav.postId})}"
+                       th:text="${fav.title}"></a>
+                    <a th:text="${fav.nickname}" th:href="@{/post/writer/{accountId} (accountId=${fav.accountId})}"></a><br />
+                    <span th:text="${#temporals.format(fav.postTime, 'yyyy/MM/dd HH:mm')} + ' | 조회 ' + ${fav.views}"></span>
+                    <button id="delete-fav-btn" class="btn btn-outline-primary float-right" th:attr="onclick=|deleteFavorite('${fav.id}')|">삭제</button>
+                </div>
+            </div>
+            <hr/>
+        </div>
+    </div>
+    <div class="no-result" th:if="${list.size() == 0}">
+        <h4 class="text-muted all-center">즐겨찾기가 없습니다.</h4>
+    </div>
+</div>
+</body>
+
+<script>
+    $(document).ready(function () {
+
+        deleteNotification = function (id) {
+            var json = {
+                "id": id
+            }
+
+            $.ajax({
+                url: "/notification/deleteNotification",
+                type: "post",
+                data: JSON.stringify(json),
+                contentType: "application/json",
+                success: function () {
+                    const div = document.getElementById('notification-' + id);
+                    div.remove();
+                },
+                error: function () {
+                    alert("요청을 실행하지 못했습니다");
+                }
+            })
+        };
+
+        deleteFavorite = function (id) {
+            var json = {
+                "id": id
+            }
+
+            $.ajax({
+                url: "/favorite/deleteFavoriteById",
+                type: "post",
+                data: JSON.stringify(json),
+                contentType: "application/json",
+                success: function (data) {
+                    const div = document.getElementById('favorite-' + id);
+                    div.remove();
+                },
+                error: function () {
+                    alert("요청을 실행하지 못했습니다");
+                }
+            })
+        }
+
+    })
+</script>
+</html>

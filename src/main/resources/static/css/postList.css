@@ -1,0 +1,10 @@
+.thumbnail > img {
+    object-fit: cover;
+}
+
+.title {
+    width : 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

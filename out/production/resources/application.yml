@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/guseokgi?serverTimezome=UTC&CharacterEncoding=UTF-8
+    username: root
+    password: yangsql98
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+      enabled: true
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+    generate-ddl: false
+
+#  logging:
+#    level:
+#      org.hibernate:
+#        SQL: error
+#        type:
+#          descriptor.sql:
+#            BasicBinder: error
+
+  devtools:
+    livereload.enabled: true
+    restart.enabled: false
+
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
+  port: 80

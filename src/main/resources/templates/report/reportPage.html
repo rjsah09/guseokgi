@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>구석기장터</title>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+    <script src="/js/headerToggle.js"></script>
+    <script src="/js/slide.js"></script>
+    <link rel="stylesheet" href="/css/commonSetting.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+</head>
+<body>
+<div th:replace="fragment/header :: header"></div>
+<div class="container-fluid">
+    <form th:action="'/report/send/' + ${postId}" th:object="${reportSend}" method="post">
+        <div id="form-wrapper">
+            <h4 class="purpose text-danger"><b>게시글 신고</b></h4>
+            <h5 class="purpose text-primary ellipsis" th:text="${postNicknameAndTitle.title}"></h5>
+            <br/>
+            <div class="form-group col">
+                <b>신고 사유를 선택해주세요</b>
+                <select class="form-control" th:field="*{reportCategory}">
+                    <option th:each="eachCategory : ${T(com.yang.guseokgi.domain.category.ReportCategory).values()}"
+                            th:value="${eachCategory}" th:text="${eachCategory.name}">opt
+                    </option>
+                </select>
+            </div>
+            <br/>
+            <button class="btn btn-primary form-submit" type="submit">신고</button>
+            <br/><br/>
+        </div>
+    </form>
+</div>
+</body>
+<script th:if="${session.accountSession} != null" th:inline="javascript">
+    $(document).ready(function () {
+
+        deleteNotification = function (id) {
+            var json = {
+                "id": id
+            }
+
+            $.ajax({
+                url: "/notification/deleteNotification",
+                type: "post",
+                data: JSON.stringify(json),
+                contentType: "application/json",
+                success: function (data) {
+                    const div = document.getElementById('notification-' + id);
+                    div.remove();
+                },
+                error: function () {
+                    alert("요청을 실행하지 못했습니다");
+                }
+            })
+        };
+
+    })
+</script>
+</html>

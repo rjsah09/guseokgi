@@ -1,0 +1,22 @@
+.category-nav {
+    width:100%;
+    height: 2.4rem;
+}
+
+.link-wrapper {
+    width: 30%;
+    float: left;
+    text-align: center;
+    margin-left: 1.4%;
+    margin-right: 1.4%;
+    padding-top: 0.5rem;
+    border-radius: 0.3rem;
+    background-color: #EAEAEA;
+}
+
+.post-title {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

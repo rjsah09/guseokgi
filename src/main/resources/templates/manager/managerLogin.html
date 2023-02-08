@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>구석기장터</title>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/commonSetting.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/manager/login.css">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+</head>
+<body>
+<div class="container">
+    <div class="form-wrapper">
+        <form action="/managerLogin" th:object="${managerLogin}" method="post">
+            <h3 class="purpose text-info"><b>구석기장터 Manager</b></h3>
+            <div class="err purpose" th:if="${#fields.hasGlobalErrors()}">
+                <b class="input-err" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></b>
+            </div>
+            <div class="form-group col">
+                <b>아이디</b>
+                <input type="text" class="form-control" th:field="*{uid}">
+                <b class="input-err" th:if="${#fields.hasErrors('uid')}" th:errors="*{uid}"></b>
+            </div>
+            <div class="form-group col">
+                <b>비밀번호</b>
+                <input type="password" class="form-control" th:field="*{password}">
+                <b class="input-err" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></b>
+            </div>
+            <br/>
+            <button class="btn btn-primary form-submit" type="submit">로그인</button>
+        </form>
+    </div>
+</div>
+</body>

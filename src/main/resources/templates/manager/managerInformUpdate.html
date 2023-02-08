@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>구석기장터</title>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/css/commonSetting.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/manager/managerNav.css">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragment/managerNav"></div>
+    <hr/>
+    <div id="content">
+        <form th:action="'/manager/inform/update/' + ${informId}" th:object="${informWrite}" method="post" enctype="multipart/form-data">
+            <h4 class="purpose">공지 수정</h4>
+            <div class="form-group col">
+                <b>제목</b>
+                <input class="form-control"  type="text" th:field="*{title}" />
+                <b class="input-err" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></b>
+            </div>
+            <div class="form-group col">
+                <b>글</b>
+                <textarea class="form-control" th:field="*{article}" cols="50" rows="15"></textarea>
+                <b class="input-err" th:if="${#fields.hasErrors('article')}" th:errors="*{article}"></b>
+            </div>
+            <input class="btn btn-primary form-submit" type="submit" name="제출">
+        </form>
+    </div>
+</div>
+</body>
+</html>

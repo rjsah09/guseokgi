@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>구석기장터</title>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+    <script src="/js/headerToggle.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="/css/commonSetting.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="css/form.css">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+</head>
+<body>
+<div th:replace="fragment/header :: header"></div>
+<div class="container-fluid">
+    <form action="/register" th:object="${accountRegister}" method="post">
+        <div id="form-wrapper-register">
+            <div id="logo">
+                <img src="/imgs/smallLogo.png">
+            </div>
+            <div class="form-group col">
+                <b>이름</b>
+                <input id="name" type="text" class="form-control" th:field="*{name}">
+                <b class="input-err" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></b>
+            </div>
+            <div class="form-group col">
+                <b>아이디(영문, 숫자 포함 5~15자 이내)</b>
+                <input type="text" class="form-control" th:field="*{uid}">
+                <b class="input-err" th:if="${#fields.hasErrors('uid')}" th:errors="*{uid}"></b>
+            </div>
+            <div class="form-group col">
+                <b>닉네임(한글, 영문, 숫자 포함 2~12자 이내)</b>
+                <input type="text" class="form-control" th:field="*{nickname}">
+                <b class="input-err" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></b>
+            </div>
+            <div class="form-group col">
+                <b>비밀번호</b>
+                <input type="password" class="form-control" th:field="*{password}">
+                <b class="input-err" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></b>
+            </div>
+            <div class="form-group col">
+                <b>비밀번호 확인</b>
+                <input type="password" class="form-control" th:field="*{passwordConfirm}">
+                <b class="input-err" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></b>
+            </div>
+            <br/>
+            <button class="btn btn-primary form-submit" type="submit">회원가입</button>
+            <br/><br/>
+        </div>
+    </form>
+</div>
+</body>
+</html>

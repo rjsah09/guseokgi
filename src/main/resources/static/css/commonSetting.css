@@ -1,0 +1,148 @@
+a {
+    text-decoration: none;
+}
+
+nav.navbar.navbar-expand-lg.navbar-dark.bg-primary {
+    justify-content: space-between; !important;
+}
+
+.dropdown-item, #profile {
+    display: inline;
+    text-align: center !important;
+}
+
+.post-title {
+    font-size: 1.0rem; !important;
+}
+
+input.form-control.mr-sm-2 {
+    width: 82%;
+}
+
+input.btn.btn-secondary.my-2.my-sm-0 {
+    width: 15%;
+}
+
+div#searchBar {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.idx {
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+textarea{
+    resize:none;
+}
+
+.purpose {
+    margin: 1rem;
+    display: block;
+    text-align: center;
+}
+
+.input-err {
+    color: red;
+}
+
+.form-submit {
+    float:right;
+    margin-right: 1rem;
+}
+
+a {
+    color: #4d5656; !important;
+}
+
+.narrow-up-down {
+    margin-top: 0.1rem;
+    margin-bottom: 0.1rem;
+}
+
+.margin1rem {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.tradeComplete {
+    margin: 1rem;
+    display: block;
+    text-align: center;
+    color: red;
+}
+
+.trade {
+    margin-bottom: 3rem;
+}
+
+.left1rem {
+    margin-left: 1rem;
+}
+
+.right1rem {
+    margin-right: 1rem;
+}
+
+.imsi {
+    display: inline-block;
+    width: 50rem;
+    height: auto;
+    !important;
+}
+
+.img {
+    object-fit: none;
+}
+
+.thumbnail > img {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 0.5rem;
+}
+
+a.post-title.preview-a {
+    display: block;
+    width : 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.preview-right {
+    margin-left: 1rem;
+    width: calc(100% - 7rem);
+}
+
+.user {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.container-fluid {
+    padding-top: 4.5rem;
+}
+
+.break-wrap {
+    word-wrap: break-word;
+}
+
+.ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.title-ellipsis {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.center-text {
+    text-align: center;
+    display: block;
+    margin: 0.5rem;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>구석기장터</title>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="/js/headerToggle.js"></script>
+    <link rel="stylesheet" href="/css/commonSetting.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/inquiryList.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+</head>
+<body>
+<div th:replace="fragment/header :: header"></div>
+<div class="container-fluid">
+        <hr/>
+        <div class="col" th:each="inquiry:${list}" th:id="'inquiry-' + ${inquiry.id}">
+            <div>
+                <span th:if="${inquiry.completed == false}">처리중</span>
+                <span th:if="${inquiry.completed == true}">처리완료</span>
+            </div>
+            <div class="inquiry-article-wrapper">
+                <a class="inquiry-article" th:text="${inquiry.question}" th:href="'/inquiry/view/' + ${inquiry.id}"></a>
+            </div>
+            <div>
+                <span th:text="'문의일자 ' + ${#temporals.format(inquiry.questionTime, 'yyyy/MM/dd HH:mm')}"></span>
+            </div>
+            <div th:if="${inquiry.completed} == true">
+                <span th:text="'처리일자 ' + ${#temporals.format(inquiry.answerTime, 'yyyy/MM/dd HH:mm')}"></span>
+            </div>
+            <hr/>
+        </div>
+    <button class="btn btn-primary float-right" th:onclick="|location.href='@{/inquiry/send}'|">문의 보내기</button>
+    <br/><br/>
+    <div th:replace="fragment/footer :: footer"></div>
+</div>
+</body>
+<script th:if="${session.accountSession} != null" th:inline="javascript">
+    $(document).ready(function () {
+
+        deleteNotification = function (id) {
+            var json = {
+                "id": id
+            }
+
+            $.ajax({
+                url: "/notification/deleteNotification",
+                type: "post",
+                data: JSON.stringify(json),
+                contentType: "application/json",
+                success: function (data) {
+                    const div = document.getElementById('notification-' + id);
+                    div.remove();
+                },
+                error: function () {
+                    alert("요청을 실행하지 못했습니다");
+                }
+            })
+        };
+
+    })
+</script>
+</html>

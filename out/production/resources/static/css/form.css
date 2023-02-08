@@ -1,0 +1,47 @@
+body {
+    background-color: #BDBDBD; !important;
+}
+
+#logo {
+    width: 16rem;
+    margin: auto;
+}
+
+#logo > form {
+    width: 100%;
+    background-color: blue;
+}
+
+#logo > img {
+    width: 100%;
+}
+
+#form-wrapper {
+    width : 90%;
+    margin: auto;
+    background-color: #EAEAEA;
+    margin-top: 8rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    border-radius: 2rem;
+}
+
+#form-wrapper-register {
+    width : 90%;
+    margin: auto;
+    background-color: #EAEAEA;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    border-radius: 2rem;
+}
+
+#form-wrapper-write {
+    width : 96%;
+    margin: auto;
+    background-color: #EAEAEA;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 2rem;
+}

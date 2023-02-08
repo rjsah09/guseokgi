@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>구석기장터</title>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="/js/headerToggle.js"></script>
+    <link rel="stylesheet" href="/css/commonSetting.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/searchBar.css">
+    <link rel="stylesheet" href="/css/postList.css">
+    <link rel="stylesheet" href="/css/writePost.css">
+    <link rel="stylesheet" href="/css/noResult.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+</head>
+<body>
+<div th:replace="fragment/header :: header"></div>
+<div class="container-fluid">
+    <div th:replace="fragment/searchBar :: searchBar"></div>
+    <div th:replace="fragment/postListContent"></div>
+    <div th:replace="fragment/footer :: footer"></div>
+    <div th:replace="fragment/writePage :: writePage"></div>
+</div>
+</body>
+<script th:inline="javascript">
+    $(document).ready(function() {
+
+        deleteNotification = function(id) {
+            var json = {
+                "id" : id
+            }
+
+            $.ajax({
+                url: "/notification/deleteNotification",
+                type: "post",
+                data: JSON.stringify(json),
+                contentType: "application/json",
+                success: function(data) {
+                    alert("알림 삭제 완료")
+                    const div = document.getElementById('notification-' + id);
+                    div.remove();
+                },
+                error: function () {
+                    alert("요청을 실행하지 못했습니다");
+                }
+            })
+        };
+
+    })
+</script>
+</html>

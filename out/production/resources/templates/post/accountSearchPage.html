@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>구석기장터</title>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+
+    <script src="/js/headerToggle.js"></script>
+    <link rel="stylesheet" href="/css/accountProfile.css">
+    <link rel="stylesheet" href="/css/commonSetting.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+</head>
+<body>
+<div th:replace="fragment/header :: header"></div>
+<div class="container-fluid">
+    <div id="accountProfile">
+        <div class="upper-profile">
+            <h5 class="text-info float-left" th:text="${writer} + '님'" style="color: #1a252f"></h5>
+            <h5 th:text="'거래 '  + ${tradedCount} + '회'" class="text-secondary float-right" style="color: #1a252f; text-align: center"></h5>
+        </div>
+        <hr/>
+        <p th:text="'판매중 ' + ${tradingCount} + '건'" class="text-success" style="text-align: center"></p>
+    </div>
+    <hr/>
+    <div th:replace="fragment/postListContent"></div>
+    <div th:replace="fragment/footer :: footer"></div>
+</div>
+</body>
+<script th:if="${session.accountSession} != null" th:inline="javascript">
+    $(document).ready(function () {
+
+        deleteNotification = function (id) {
+            var json = {
+                "id": id
+            }
+
+            $.ajax({
+                url: "/notification/deleteNotification",
+                type: "post",
+                data: JSON.stringify(json),
+                contentType: "application/json",
+                success: function (data) {
+                    const div = document.getElementById('notification-' + id);
+                    div.remove();
+                },
+                error: function () {
+                    alert("요청을 실행하지 못했습니다");
+                }
+            })
+        };
+
+    })
+</script>
+</html>

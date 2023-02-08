@@ -1,0 +1,76 @@
+.report-nav {
+    width: 100%;
+    height: 3rem;
+    background-color: #EAEAEA;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.list {
+    display: inline-block;
+    width: 100%;
+    height: 3rem;
+    background-color: #EAEAEA;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.list-element {
+    width: 14%;
+    display: block;
+    padding: 0.8rem;
+    height: 3rem;
+    float:left;
+}
+
+.list-element > button {
+    margin: 0;
+}
+
+.ellipsis {
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.list-button {
+    padding: 0.4rem;
+}
+
+.list-button > button, .list-button > a {
+    margin: 0;
+}
+
+.list-detail {
+    background-color: #EAEAEA;
+    display: inline-block;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    border-radius: 1em;
+}
+
+.list-detail-title {
+    width: 100%;
+    margin: 1rem;
+    text-align: left;
+}
+
+.list-detail-article {
+    width: 100%;
+    margin: 1rem;
+    text-align: left;
+}
+
+.list-detail-img {
+    max-width: 100%;
+    height: 15rem;
+}
+
+.list-detail-img > img {
+    max-width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

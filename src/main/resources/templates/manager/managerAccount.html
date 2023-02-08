@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>구석기장터</title>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/commonSetting.css">
+    <link rel="stylesheet" href="/css/manager/account.css">
+    <link rel="stylesheet" href="/css/manager/managerNav.css">
+    <link rel="stylesheet" href="/css/manager/managerSearchBar.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragment/managerNav"></div>
+    <hr/>
+    <div th:replace="fragment/managerSearchBar :: managerSearchBar"></div>
+    <div class="account-nav">
+        <div class="list-element">
+            <h5 class="text-danger">번호</h5>
+        </div>
+        <div class="list-element">
+            <h5 class="text-danger">아이디</h5>
+        </div>
+        <div class="list-element">
+            <h5 class="text-danger">닉네임</h5>
+        </div>
+        <div class="list-element">
+            <h5 class="text-danger">작성 글</h5>
+        </div>
+        <div class="list-element">
+            <h5 class="text-danger">진행중 거래</h5>
+        </div>
+        <div class="list-element">
+            <h5 class="text-danger">대기중 문의</h5>
+        </div>
+    </div>
+    <div class="list" th:each="list: ${list}">
+        <div class="list-element">
+            <h5 th:text="${list.id}"></h5>
+        </div>
+        <div class="list-element">
+            <h5 th:text="${list.uid}"></h5>
+        </div>
+        <div class="list-element">
+            <h5 th:text="${list.nickname}"></h5>
+        </div>
+        <div class="list-element">
+            <h5><a class="text-info" th:href="@{/manager/post(keyword = ${list.uid})}">작성 글</a></h5>
+        </div>
+        <div class="list-element">
+            <h5><a class="text-info" th:href="@{/manager/trade(keyword = ${list.uid})}">진행중 거래</a></h5>
+        </div>
+        <div class="list-element">
+            <h5><a class="text-info" th:href="@{/manager/inquiry(keyword = ${list.uid})}">대기중 문의</a></h5>
+        </div>
+    </div>
+    <div th:replace="fragment/footer :: footer"></div>
+</div>
+</body>
+</html>

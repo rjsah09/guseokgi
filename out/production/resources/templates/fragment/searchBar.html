@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div id="searchBar" th:fragment="searchBar">
+    <form class="my-2 my-lg-0">
+        <button class="btn btn-secondary my-sm-0" type="submit"><img src="/icons/search.png" class="search-btn" /></button>
+        <!--/*@thymesVar id="keyword" type="java.lang.String"*/-->
+        <input class="form-control mr-sm-2 search-text" type="text" name="keyword" placeholder="제목 검색" th:value="${keyword}"/>
+    </form>
+    <hr/>
+</div>
+</html>

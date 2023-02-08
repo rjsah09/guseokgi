@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="footer" class="idx">
+    <a class="footer-href" th:href= "@{${#httpServletRequest.requestURI}(page=${startIndex})}"><<</a>
+    <a class="footer-href" th:href= "@{${#httpServletRequest.requestURI}(page=${prevIndex})}"><</a>
+    <th:block th:each="page:${#numbers.sequence(startPage,endPage)}">
+        <a class="footer-href" th:if="${page != currentPage && endPage > 0}" th:href= "@{${#httpServletRequest.requestURI}(page=${page})}" th:text ="${page+1}"></a>
+        <strong class="footer-href" th:if="${page==currentPage}" th:text ="${page+1}" style="color:red"></strong>
+    </th:block>
+    <a class="footer-href" th:href= "@{${#httpServletRequest.requestURI}(page=${nextIndex})}">></a>
+    <a class="footer-href" th:href= "@{${#httpServletRequest.requestURI}(page=${endIndex})}">>></a>
+</div>

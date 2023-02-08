@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div id="managerSearchBar" th:fragment="managerSearchBar">
+    <form class="my-2 my-lg-0">
+        <button id="search-submit" class="btn btn-secondary my-sm-0" type="submit"><img src="/icons/search.png" class="search-btn" /></button>
+        <input id="search-text" class="form-control mr-sm-2 search-text" type="text" name="keyword" placeholder="아이디 검색" th:value="${keyword}"/>
+    </form>
+</div>
+</html>

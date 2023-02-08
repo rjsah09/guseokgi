@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>구석기장터</title>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="/css/commonSetting.css">
+    <link rel="stylesheet" href="/css/chatting.css">
+    <link rel="stylesheet" href="/css/header.css">
+
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+</head>
+<body>
+<div id="titles">
+    <table>
+        <tr class="table-dark">
+            <td><b th:text="'[' + ${room.myAccountNickname} + '] ' + ${room.myPostTitle}"></b></td>
+        </tr>
+        <tr class="table-light">
+            <td><b th:text="'[' + ${room.otherAccountNickname} + '] ' + ${room.otherPostTitle}"></b></td>
+        </tr>
+    </table>
+</div>
+<div class="chat-container-history">
+    <div class='chat-line-area' th:each="history : ${history}">
+
+        <div class='alert chat-box-area-text my-chat-box'
+             th:if="${#strings.equals(session.accountSession.id, history.writer)
+             && history.chatCategory == 'TEXT'}">
+            <p th:text="${history.message}" class="chat-box-text"></p>
+        </div>
+        <div class='alert chat-box-area-image my-chat-box'
+             th:if="${#strings.equals(session.accountSession.id, history.writer)
+             && history.chatCategory == 'IMAGE'}">
+            <img th:src="${history.message}" class="chat-box-image" />
+        </div>
+        <div class='alert chat-box-area-text my-chat-box'
+             th:if="${#strings.equals(session.accountSession.id, history.writer)
+             && (history.chatCategory != 'TEXT'
+             && history.chatCategory != 'IMAGE')}">
+            <p th:text="${history.message}" class="chat-box-system"></p>
+        </div>
+
+        <div class='alert chat-box-area-text other-chat-box'
+             th:if="${!#strings.equals(session.accountSession.id, history.writer)
+             && history.chatCategory == 'TEXT'}">
+            <p th:text="${history.message}" class="chat-box-text"></p>
+        </div>
+        <div class='alert chat-box-area-image other-chat-box'
+             th:if="${!#strings.equals(session.accountSession.id, history.writer)
+             && history.chatCategory == 'IMAGE'}">
+            <img th:src="${history.message}" class="chat-box-image"/>
+        </div>
+        <div class='alert chat-box-area-image other-chat-box'
+             th:if="${!#strings.equals(session.accountSession.id, history.writer)
+             && (history.chatCategory != 'TEXT'
+             && history.chatCategory != 'IMAGE')}">
+            <p th:text="${history.message}" class="chat-box-system"></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>구석기장터</title>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+    <script src="/js/headerToggle.js"></script>
+    <link rel="stylesheet" href="/css/commonSetting.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+</head>
+<body>
+<div th:replace="fragment/header :: header"></div>
+<div class="container-fluid">
+    <form th:action="'/post/update/' + ${postId}" th:object="${postUpdate}" method="post" enctype="multipart/form-data">
+        <div id="form-wrapper-write">
+            <h4 class="purpose">물품 수정</h4>
+            <div class="form-group col">
+                <b>제목</b>
+                <input class="form-control" type="text" th:field="*{title}"/>
+                <b class="input-err" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></b>
+            </div>
+            <div class="form-group col">
+                <b>글</b>
+                <textarea class="form-control" th:field="*{article}" cols="50" rows="10"></textarea>
+                <b class="input-err" th:if="${#fields.hasErrors('article')}" th:errors="*{article}"></b>
+            </div>
+            <div class="form-group col">
+                <b>물품 카테고리</b>
+                <select class="form-control" th:field="*{postCategory}">
+                    <option th:each="eachCategory : ${T(com.yang.guseokgi.domain.category.PostCategory).values()}"
+                            th:value="${eachCategory}" th:text="${eachCategory.name}">
+                    </option>
+                </select>
+            </div>
+            <div>
+                <button id="image-re-upload" type="button" class="btn btn-secondary form-submit">이미지 재 등록</button>
+                <button id="image-not-re-upload" type="button" class="btn btn-secondary form-submit">기존 이미지 사용</button>
+            </div>
+            <br/><br/>
+            <input type="checkbox" th:field="*{fileUpdate}" name="fileUpdate" hidden/>
+            <div id="image-upload" class="form-group col">
+                <b>이미지 업로드</b>
+                <input class="form-control" type="file" name="files" multiple="multiple" th:field="*{files}"
+                       accept="image/jpeg,image/png">
+            </div>
+            <br/>
+            <input class="btn btn-primary form-submit" type="submit" name="수정">
+            <br/><br/>
+        </div>
+    </form>
+
+</div>
+</body>
+
+<script th:inlne="javascript">
+    $(document).ready(function () {
+        $("#image-not-re-upload, #image-upload").hide();
+
+        $("#image-re-upload").click(function () {
+            $("#image-re-upload").hide();
+            $("#image-not-re-upload").show();
+            $("#image-upload").show();
+            $("input[type=checkbox][name=fileUpdate]").prop('checked', true);
+        });
+
+        $("#image-not-re-upload").click(function () {
+            $("#image-re-upload").show();
+            $("#image-not-re-upload").hide();
+            $("#image-upload").hide();
+            $("input[type=checkbox][name=fileUpdate]").prop('checked', false);
+
+        });
+
+        deleteNotification = function (id) {
+            var json = {
+                "id": id
+            }
+
+            $.ajax({
+                url: "/notification/deleteNotification",
+                type: "post",
+                data: JSON.stringify(json),
+                contentType: "application/json",
+                success: function (data) {
+                    const div = document.getElementById('notification-' + id);
+                    div.remove();
+                },
+                error: function () {
+                    alert("요청을 실행하지 못했습니다");
+                }
+            })
+        };
+
+    });
+
+</script>
+</html>
